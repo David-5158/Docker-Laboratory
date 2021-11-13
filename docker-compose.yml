@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  db:
+    image: mysql:8.0.24 # 수정
+    volumes:
+      - ./db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: userdb
+      MYSQL_USER: dongju
+      MYSQL_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+
+      
+  node:
+    build: .
+    depends_on: 
+      - db
+    volumes:
+      - ./:/app
+      # - /app/node_modules
+    ports:
+      - "3035:3035"
+    command: npm run dev
+    environment:
+      MYSQL_DB_HOST: db:3306
+      MYSQL_DB_NAME: dongju
+      MYSQL_DB_USER: dongju
+      MYSQL_DB_PASSWORD: 123456 
